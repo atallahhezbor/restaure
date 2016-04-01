@@ -1,16 +1,29 @@
 package com.example.atallahhezbor.restaure;
 
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.View;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.TextView;
+
+import com.yelp.clientlib.connection.YelpAPI;
+import com.yelp.clientlib.connection.YelpAPIFactory;
+import com.yelp.clientlib.entities.SearchResponse;
+
+import java.util.HashMap;
+import java.util.Map;
+
+import retrofit.Call;
+import retrofit.Response;
 
 public class MainActivity extends AppCompatActivity {
-
+    YelpAPI yelpAPI;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -26,6 +39,22 @@ public class MainActivity extends AppCompatActivity {
                         .setAction("Action", null).show();
             }
         });
+
+        // Get keys and set up api factory
+        String consumerKey = getResources().getString(R.string.consumer_key);
+        String consumerSecret = getResources().getString(R.string.consumer_secret);
+        String token = getResources().getString(R.string.token);
+        String tokenSecret = getResources().getString(R.string.token_secret);
+
+        YelpAPIFactory apiFactory = new YelpAPIFactory(consumerKey, consumerSecret, token, tokenSecret);
+        yelpAPI = apiFactory.createAPI();
+
+        // Set up async task to make api call
+        AsyncTaskRunner runner = new AsyncTaskRunner();
+        runner.execute();
+
+
+
     }
 
     @Override
@@ -49,4 +78,32 @@ public class MainActivity extends AppCompatActivity {
 
         return super.onOptionsItemSelected(item);
     }
+
+
+    private class AsyncTaskRunner extends AsyncTask<String, String, String> {
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+        protected String doInBackground(String... params) {
+            Map<String, String> searchParams = new HashMap<>();
+
+            searchParams.put("term", "food");
+            Call<SearchResponse> call = yelpAPI.search("Charlottesville", searchParams);
+            try {
+                Response<SearchResponse> response = call.execute();
+                return response.body().toString();
+            } catch (Exception e) {
+                Log.e("API ERR", e.toString());
+                return "Error";
+            }
+        }
+
+        protected void onPostExecute(String result) {
+            ((TextView)findViewById(R.id.centerView)).setText(result);
+        }
+    }
+
+
 }
