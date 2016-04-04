@@ -10,12 +10,15 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.TextView;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 
 import com.yelp.clientlib.connection.YelpAPI;
 import com.yelp.clientlib.connection.YelpAPIFactory;
+import com.yelp.clientlib.entities.Business;
 import com.yelp.clientlib.entities.SearchResponse;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -24,6 +27,8 @@ import retrofit.Response;
 
 public class MainActivity extends AppCompatActivity {
     YelpAPI yelpAPI;
+    public ArrayAdapter<String> restaurantsAdapter;
+    public ArrayList<String> restaurantsList = new ArrayList<String>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,6 +44,11 @@ public class MainActivity extends AppCompatActivity {
                         .setAction("Action", null).show();
             }
         });
+        // Set up array adapter and list
+        restaurantsAdapter = new ArrayAdapter(this,
+                android.R.layout.simple_list_item_1, restaurantsList);
+        final ListView restaurantsView = (ListView) findViewById(R.id.restaurants);
+        restaurantsView.setAdapter(restaurantsAdapter);
 
         // Get keys and set up api factory
         String consumerKey = getResources().getString(R.string.consumer_key);
@@ -48,6 +58,8 @@ public class MainActivity extends AppCompatActivity {
 
         YelpAPIFactory apiFactory = new YelpAPIFactory(consumerKey, consumerSecret, token, tokenSecret);
         yelpAPI = apiFactory.createAPI();
+
+
 
         // Set up async task to make api call
         AsyncTaskRunner runner = new AsyncTaskRunner();
@@ -93,7 +105,10 @@ public class MainActivity extends AppCompatActivity {
             Call<SearchResponse> call = yelpAPI.search("Charlottesville", searchParams);
             try {
                 Response<SearchResponse> response = call.execute();
-                return response.body().toString();
+                for (Business business : response.body().businesses()) {
+                    restaurantsList.add(business.name());
+                }
+                return "Done";
             } catch (Exception e) {
                 Log.e("API ERR", e.toString());
                 return "Error";
@@ -101,7 +116,8 @@ public class MainActivity extends AppCompatActivity {
         }
 
         protected void onPostExecute(String result) {
-            ((TextView)findViewById(R.id.centerView)).setText(result);
+            restaurantsAdapter.notifyDataSetChanged();
+//            ((TextView)findViewById(R.id.centerView)).setText(restaurantsList.toString());
         }
     }
 
