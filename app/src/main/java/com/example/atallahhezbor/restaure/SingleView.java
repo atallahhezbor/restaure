@@ -1,15 +1,18 @@
 package com.example.atallahhezbor.restaure;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
 public class SingleView extends AppCompatActivity {
-
+    static final int REQUEST_IMAGE_CAPTURE = 1;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -29,6 +32,20 @@ public class SingleView extends AppCompatActivity {
         final String name = (String) getIntent().getStringExtra("Restaurant");
         TextView title = (TextView)findViewById(R.id.restaurantName);
         title.setText(name);
+
+        Button pictureButton = (Button) findViewById(R.id.pictureButton);
+        pictureButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                dispatchTakePictureIntent();
+            }
+        });
+    }
+
+    private void dispatchTakePictureIntent() {
+        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
+            startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
+        }
     }
 
 }
