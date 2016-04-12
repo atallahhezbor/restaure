@@ -1,5 +1,6 @@
 package com.example.atallahhezbor.restaure;
 
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -10,6 +11,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
@@ -65,7 +67,14 @@ public class MainActivity extends AppCompatActivity {
         AsyncTaskRunner runner = new AsyncTaskRunner();
         runner.execute();
 
-
+        restaurantsView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent intent = new Intent(MainActivity.this, SingleView.class);
+                intent.putExtra("Restaurant", (String) restaurantsView.getItemAtPosition(position));
+                startActivityForResult(intent, 0);
+            }
+        });
 
     }
 
