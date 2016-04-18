@@ -1,6 +1,9 @@
 package com.example.atallahhezbor.restaure;
 
+import android.content.ContentValues;
 import android.content.Intent;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -12,6 +15,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import java.io.File;
@@ -53,7 +57,65 @@ public class SingleView extends AppCompatActivity {
                 dispatchTakePictureIntent();
             }
         });
+
+        Button saveButton = (Button) findViewById(R.id.saveButton);
+        saveButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                saveToDB(name);
+            }
+        });
     }
+
+    public void saveToDB(String name) {
+        // Gets the data repository in write mode
+        DatabaseHelper mDbHelper = new DatabaseHelper(this);
+        SQLiteDatabase db = mDbHelper.getWritableDatabase();
+
+        // Create a new map of values, where column names are the keys
+        ContentValues values = new ContentValues();
+        EditText editText = (EditText)findViewById(R.id.editText);
+        String description = editText.getText().toString();
+        values.put("name", name);
+        values.put("filename", mCurrentPhotoPath);
+        values.put("description", description);
+        // Insert the new row
+        db.insert(
+                "restaurants",
+                null,
+                values);
+
+        // Define a projection that specifies which columns from the database
+        // you will actually use after this query.
+        String[] projection = {
+                "ID",
+                "name",
+                "filename",
+                "description"
+        };
+
+        // How you want the results sorted in the resulting Cursor
+        String sortOrder =
+                "ID" + " DESC";
+
+        Cursor cursor = db.query(
+                "restaurants",  // The table to query
+                projection,                               // The columns to return
+                null,                                // The columns for the WHERE clause
+                null,                            // The values for the WHERE clause
+                null,                                     // don't group the rows
+                null,                                     // don't filter by row groups
+                null                                 // The sort order
+        );
+
+        //cursor.moveToFirst();
+        while(cursor.moveToNext()) {
+            String currID = cursor.getString(
+                    cursor.getColumnIndexOrThrow("name")
+            );
+            Log.i("DBData", currID);
+        }
+    }
+
 
     private void dispatchTakePictureIntent() {
 
