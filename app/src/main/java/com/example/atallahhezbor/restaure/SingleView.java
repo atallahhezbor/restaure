@@ -21,6 +21,7 @@ import android.widget.TextView;
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 
 
@@ -64,7 +65,65 @@ public class SingleView extends AppCompatActivity {
                 saveToDB(name);
             }
         });
+
+        // Check if there is saved data for this restaurant
+        ArrayList<String> savedData = readFromDB(name);
+        if (savedData.size() > 0) {
+            EditText editText = (EditText)findViewById(R.id.editText);
+            String savedDesc = savedData.get(3);
+            editText.setText(savedDesc);
+        }
     }
+
+    public ArrayList<String> readFromDB(String name) {
+        // Gets the data repository in read mode
+        DatabaseHelper mDbHelper = new DatabaseHelper(this);
+        SQLiteDatabase db = mDbHelper.getReadableDatabase();
+
+        //  Create a new array of values, where column names are the keys
+        //  for use in the where clause
+        String[] values = {
+                name
+        };
+        // Define a projection that specifies which columns from the database
+        // you will actually use after this query.
+        String[] projection = {
+                "ID",
+                "name",
+                "filename",
+                "description"
+        };
+
+
+
+        Cursor cursor = db.query(
+                "restaurants",  // The table to query
+                projection,                               // The columns to return
+                "name=?",                                // The columns for the WHERE clause
+                values,                            // The values for the WHERE clause
+                null,                                     // don't group the rows
+                null,                                     // don't filter by row groups
+                null                                 // The sort order
+        );
+
+
+        ArrayList<String> result = new ArrayList<>();
+
+        // Construct the result if found
+        if (cursor.moveToFirst()) {
+            String[] columnNames = cursor.getColumnNames();
+            for (String column : columnNames) {
+                String value = cursor.getString(
+                        cursor.getColumnIndexOrThrow(column)
+                );
+                result.add(value);
+            }
+        }
+
+        return result;
+    }
+
+
 
     public void saveToDB(String name) {
         // Gets the data repository in write mode
@@ -115,7 +174,6 @@ public class SingleView extends AppCompatActivity {
             Log.i("DBData", currID);
         }
     }
-
 
     private void dispatchTakePictureIntent() {
 
