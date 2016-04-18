@@ -44,4 +44,12 @@
         android:layout_alignParentStart="true"
         android:layout_marginBottom="53dp" />
 
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/imageView"
+        android:layout_below="@+id/pictureButton"
+        android:layout_marginTop="101dp"
+        android:layout_above="@+id/saveButton" />
+
 </RelativeLayout>
