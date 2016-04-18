@@ -14,11 +14,13 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.yelp.clientlib.connection.YelpAPI;
 import com.yelp.clientlib.connection.YelpAPIFactory;
 import com.yelp.clientlib.entities.Business;
 import com.yelp.clientlib.entities.SearchResponse;
+import com.yelp.clientlib.entities.options.CoordinateOptions;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -29,6 +31,8 @@ import retrofit.Response;
 
 public class MainActivity extends AppCompatActivity {
     YelpAPI yelpAPI;
+    public double latitude;
+    public double longitude;
     public ArrayAdapter<String> restaurantsAdapter;
     public ArrayList<String> restaurantsList = new ArrayList<String>();
     @Override
@@ -61,8 +65,11 @@ public class MainActivity extends AppCompatActivity {
         YelpAPIFactory apiFactory = new YelpAPIFactory(consumerKey, consumerSecret, token, tokenSecret);
         yelpAPI = apiFactory.createAPI();
 
-
-
+        GPSTracker gps = new GPSTracker(this);
+        latitude = gps.getLatitude();
+        longitude = gps.getLongitude();
+        TextView locationView = (TextView)findViewById(R.id.location);
+        locationView.setText("Location used: " + Double.toString(latitude) + ", " + Double.toString(longitude));
         // Set up async task to make api call
         AsyncTaskRunner runner = new AsyncTaskRunner();
         runner.execute();
@@ -75,6 +82,7 @@ public class MainActivity extends AppCompatActivity {
                 startActivityForResult(intent, 0);
             }
         });
+
 
     }
 
@@ -111,7 +119,10 @@ public class MainActivity extends AppCompatActivity {
             Map<String, String> searchParams = new HashMap<>();
 
             searchParams.put("term", "food");
-            Call<SearchResponse> call = yelpAPI.search("Charlottesville", searchParams);
+            CoordinateOptions coordinate = CoordinateOptions.builder()
+                    .latitude(latitude)
+                    .longitude(longitude).build();
+            Call<SearchResponse> call = yelpAPI.search(coordinate, searchParams);
             try {
                 Response<SearchResponse> response = call.execute();
                 for (Business business : response.body().businesses()) {
