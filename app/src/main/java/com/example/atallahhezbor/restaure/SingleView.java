@@ -32,7 +32,7 @@ import java.util.List;
 
 public class SingleView extends AppCompatActivity {
     static final int REQUEST_IMAGE_CAPTURE = 1;
-    String mCurrentPhotoPath;
+    String mCurrentPhotoPath = "";
 
 
     @Override
@@ -80,7 +80,7 @@ public class SingleView extends AppCompatActivity {
             // Set the image file if saved
             String filePath = savedData.get(2);
             ImageView imageView = (ImageView)findViewById(R.id.imageView);
-            if (filePath.length() > 0)
+            if (filePath != null)
                 setPic(imageView, filePath);
         }
     }
@@ -144,45 +144,58 @@ public class SingleView extends AppCompatActivity {
         EditText editText = (EditText)findViewById(R.id.editText);
         String description = editText.getText().toString();
         values.put("name", name);
-        List<String> path = Arrays.asList(mCurrentPhotoPath.split("/"));
-        String filename = "sdcard/Pictures/" + path.get(path.size()-1);
-        values.put("filename", filename);
-        values.put("description", description);
-        // Insert the new row
-        db.insert(
-                "restaurants",
-                null,
-                values);
+        if (mCurrentPhotoPath.length() > 0) {
+            List<String> path = Arrays.asList(mCurrentPhotoPath.split("/"));
+            String filename = "sdcard/Pictures/" + path.get(path.size() - 1);
+            values.put("filename", filename);
+        }
+            values.put("description", description);
 
-        // Define a projection that specifies which columns from the database
-        // you will actually use after this query.
-        String[] projection = {
-                "ID",
-                "name",
-                "filename",
-                "description"
-        };
+        // Check if the restaurant already exists
+        String[] whereArgs = {name};
+        String[] columns = {"ID"};
+        Cursor c = db.query("restaurants",columns,"name = ?", whereArgs,null, null,null);
+        // if so update else insert
+        if (c.moveToFirst()) {
+            String[] updateWhereArgs = { c.getString(0) };
+            db.update("restaurants", values, "ID = ?",updateWhereArgs);
+        } else {
+            // Insert the new row
+            db.insert(
+                    "restaurants",
+                    null,
+                    values);
 
-        // How you want the results sorted in the resulting Cursor
-        String sortOrder =
-                "ID" + " DESC";
+            // Define a projection that specifies which columns from the database
+            // you will actually use after this query.
+            String[] projection = {
+                    "ID",
+                    "name",
+                    "filename",
+                    "description"
+            };
 
-        Cursor cursor = db.query(
-                "restaurants",  // The table to query
-                projection,                               // The columns to return
-                null,                                // The columns for the WHERE clause
-                null,                            // The values for the WHERE clause
-                null,                                     // don't group the rows
-                null,                                     // don't filter by row groups
-                null                                 // The sort order
-        );
+            // How you want the results sorted in the resulting Cursor
+            String sortOrder =
+                    "ID" + " DESC";
 
-        //cursor.moveToFirst();
-        while(cursor.moveToNext()) {
-            String currID = cursor.getString(
-                    cursor.getColumnIndexOrThrow("name")
+            Cursor cursor = db.query(
+                    "restaurants",  // The table to query
+                    projection,                               // The columns to return
+                    null,                                // The columns for the WHERE clause
+                    null,                            // The values for the WHERE clause
+                    null,                                     // don't group the rows
+                    null,                                     // don't filter by row groups
+                    null                                 // The sort order
             );
-            Log.i("DBData", currID);
+
+            //cursor.moveToFirst();
+            while (cursor.moveToNext()) {
+                String currID = cursor.getString(
+                        cursor.getColumnIndexOrThrow("name")
+                );
+                Log.i("DBData", currID);
+            }
         }
     }
 

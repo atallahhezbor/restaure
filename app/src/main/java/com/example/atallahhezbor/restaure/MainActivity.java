@@ -79,6 +79,7 @@ public class MainActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent = new Intent(MainActivity.this, SingleView.class);
                 intent.putExtra("Restaurant", (String) restaurantsView.getItemAtPosition(position));
+
                 startActivityForResult(intent, 0);
             }
         });

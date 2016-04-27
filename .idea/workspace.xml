@@ -10,6 +10,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="496ae85f-951f-429d-8800-f067a96cfde2" name="Default" comment="">
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/example/atallahhezbor/restaure/MainActivity.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/atallahhezbor/restaure/MainActivity.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/example/atallahhezbor/restaure/SingleView.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/atallahhezbor/restaure/SingleView.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
@@ -35,8 +36,8 @@
       <file leaf-file-name="MainActivity.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/atallahhezbor/restaure/MainActivity.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="85" column="0" selection-start-line="85" selection-start-column="0" selection-end-line="85" selection-end-column="0" />
+            <state vertical-scroll-proportion="-5.6666665">
+              <caret line="81" column="0" selection-start-line="81" selection-start-column="0" selection-end-line="81" selection-end-column="0" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -47,12 +48,12 @@
       <file leaf-file-name="SingleView.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/atallahhezbor/restaure/SingleView.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.11566265">
-              <caret line="137" column="23" selection-start-line="137" selection-start-column="16" selection-end-line="137" selection-end-column="23" />
+            <state vertical-scroll-proportion="0.49859944">
+              <caret line="81" column="52" selection-start-line="81" selection-start-column="52" selection-end-line="81" selection-end-column="52" />
               <folding>
                 <element signature="imports" expanded="true" />
-                <element signature="e#2275#2401#0" expanded="true" />
-                <element signature="e#2400#2401#0" expanded="true" />
+                <element signature="e#2280#2406#0" expanded="true" />
+                <element signature="e#2405#2406#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -1727,8 +1728,8 @@
         <option value="$PROJECT_DIR$/app/src/main/java/com/example/atallahhezbor/restaure/DatabaseHelper.java" />
         <option value="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" />
         <option value="$PROJECT_DIR$/app/src/main/res/layout/content_main.xml" />
-        <option value="$PROJECT_DIR$/app/src/main/java/com/example/atallahhezbor/restaure/MainActivity.java" />
         <option value="$PROJECT_DIR$/app/src/main/res/layout/content_single_view.xml" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/example/atallahhezbor/restaure/MainActivity.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/example/atallahhezbor/restaure/SingleView.java" />
       </list>
     </option>
@@ -2116,7 +2117,13 @@
       <option name="project" value="LOCAL" />
       <updated>1461004046961</updated>
     </task>
-    <option name="localTasksCounter" value="11" />
+    <task id="LOCAL-00011" summary="Fixes picture read and write">
+      <created>1461774166991</created>
+      <option name="number" value="00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1461774166991</updated>
+    </task>
+    <option name="localTasksCounter" value="12" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -2128,7 +2135,7 @@
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="13" side_tool="false" content_ui="tabs" />
       <window_info id="Android Model" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="5" side_tool="true" content_ui="tabs" />
       <window_info id="Capture Analysis" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
-      <window_info id="Android Monitor" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.32761088" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Android Monitor" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.41058657" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Captures" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="4" side_tool="true" content_ui="tabs" />
@@ -2168,6 +2175,7 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CHECK_CODE_SMELLS_BEFORE_PROJECT_COMMIT" value="false" />
+    <option name="CHECK_NEW_TODO" value="false" />
     <MESSAGE value="Initial Commit" />
     <MESSAGE value="Adds internet access permission" />
     <MESSAGE value="Adds Yelp API hook and async task" />
@@ -2178,7 +2186,8 @@
     <MESSAGE value="Adds detail form" />
     <MESSAGE value="Adds SQLite DB save" />
     <MESSAGE value="Adds SQLite DB read and persistent data" />
-    <option name="LAST_COMMIT_MESSAGE" value="Adds SQLite DB read and persistent data" />
+    <MESSAGE value="Fixes picture read and write" />
+    <option name="LAST_COMMIT_MESSAGE" value="Fixes picture read and write" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -2203,8 +2212,8 @@
           <caret line="38" column="44" selection-start-line="38" selection-start-column="44" selection-end-line="38" selection-end-column="44" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#2275#2401#0" expanded="true" />
-            <element signature="e#2400#2401#0" expanded="true" />
+            <element signature="e#2280#2406#0" expanded="true" />
+            <element signature="e#2405#2406#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -2593,8 +2602,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/atallahhezbor/restaure/MainActivity.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="85" column="0" selection-start-line="85" selection-start-column="0" selection-end-line="85" selection-end-column="0" />
+        <state vertical-scroll-proportion="-5.6666665">
+          <caret line="81" column="0" selection-start-line="81" selection-start-column="0" selection-end-line="81" selection-end-column="0" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
@@ -2614,12 +2623,12 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/atallahhezbor/restaure/SingleView.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.11566265">
-          <caret line="137" column="23" selection-start-line="137" selection-start-column="16" selection-end-line="137" selection-end-column="23" />
+        <state vertical-scroll-proportion="0.49859944">
+          <caret line="81" column="52" selection-start-line="81" selection-start-column="52" selection-end-line="81" selection-end-column="52" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#2275#2401#0" expanded="true" />
-            <element signature="e#2400#2401#0" expanded="true" />
+            <element signature="e#2280#2406#0" expanded="true" />
+            <element signature="e#2405#2406#0" expanded="true" />
           </folding>
         </state>
       </provider>
