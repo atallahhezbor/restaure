@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -24,10 +25,9 @@ import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
-
-
-
+import java.util.List;
 
 
 public class SingleView extends AppCompatActivity {
@@ -72,9 +72,16 @@ public class SingleView extends AppCompatActivity {
         // Check if there is saved data for this restaurant
         ArrayList<String> savedData = readFromDB(name);
         if (savedData.size() > 0) {
+            // Set the description
             EditText editText = (EditText)findViewById(R.id.editText);
             String savedDesc = savedData.get(3);
             editText.setText(savedDesc);
+
+            // Set the image file if saved
+            String filePath = savedData.get(2);
+            ImageView imageView = (ImageView)findViewById(R.id.imageView);
+            if (filePath.length() > 0)
+                setPic(imageView, filePath);
         }
     }
 
@@ -132,13 +139,14 @@ public class SingleView extends AppCompatActivity {
         // Gets the data repository in write mode
         DatabaseHelper mDbHelper = new DatabaseHelper(this);
         SQLiteDatabase db = mDbHelper.getWritableDatabase();
-
         // Create a new map of values, where column names are the keys
         ContentValues values = new ContentValues();
         EditText editText = (EditText)findViewById(R.id.editText);
         String description = editText.getText().toString();
         values.put("name", name);
-        values.put("filename", mCurrentPhotoPath);
+        List<String> path = Arrays.asList(mCurrentPhotoPath.split("/"));
+        String filename = "sdcard/Pictures/" + path.get(path.size()-1);
+        values.put("filename", filename);
         values.put("description", description);
         // Insert the new row
         db.insert(
@@ -181,15 +189,7 @@ public class SingleView extends AppCompatActivity {
     private void dispatchTakePictureIntent() {
 
 
-//        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-//                if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
-//                        startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
-//                   }
-
-//
-//
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        Intent mediaScanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
 
         // Ensure that there's a camera activity to handle the intent
         if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
@@ -203,10 +203,10 @@ public class SingleView extends AppCompatActivity {
             }
             // Continue only if the File was successfully created
             if (photoFile != null) {
-                //takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT,
-                //        Uri.fromFile(photoFile));
+                Log.i("uri", Uri.fromFile(photoFile).toString());
+                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT,
+                        Uri.fromFile(photoFile));
                 startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
-                galleryAddPic();
 
             } else {
                 Log.i("CAMERA", "null_photo");
@@ -241,12 +241,35 @@ public class SingleView extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
-            Bundle extras = data.getExtras();
-            Log.i("extras", extras.toString());
-            Bitmap imageBitmap = (Bitmap) extras.get("data");
+            // Add the picture to the gallery
+            galleryAddPic();
+            // Call setPic() to generate the thumbnail
             ImageView mImageView = (ImageView)findViewById(R.id.imageView);
-            mImageView.setImageBitmap(imageBitmap);
+            List<String> path = Arrays.asList(mCurrentPhotoPath.split("/"));
+            String filename = "sdcard/Pictures/" + path.get(path.size()-1);
+            setPic(mImageView, filename);
+
         }
+    }
+
+    private void setPic(ImageView mImageView, String filepath) {
+        BitmapFactory.Options bmOptions = new BitmapFactory.Options();
+        // Get the dimensions of the View
+        // TODO: use this to scale the image appropriately
+        int targetW = mImageView.getWidth();
+        int targetH = mImageView.getHeight();
+        int photoW = bmOptions.outWidth;
+        int photoH = bmOptions.outHeight;
+        // Get the dimensions of the bitmap
+        bmOptions.inJustDecodeBounds = true;
+        BitmapFactory.decodeFile(filepath, bmOptions);
+
+        // Decode the image file into a Bitmap sized to fill the View
+        bmOptions.inJustDecodeBounds = false;
+        bmOptions.inSampleSize = 1;
+
+        Bitmap bitmap = BitmapFactory.decodeFile(filepath, bmOptions);
+        mImageView.setImageBitmap(bitmap);
     }
 
 }
