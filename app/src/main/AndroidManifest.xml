@@ -3,11 +3,14 @@
     package="com.example.atallahhezbor.restaure">
 
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-feature android:name="android.hardware.camera"
+
+    <uses-feature
+        android:name="android.hardware.camera"
         android:required="true" />
+
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
     <application
         android:allowBackup="true"
@@ -28,6 +31,10 @@
         <activity
             android:name=".SingleView"
             android:label="@string/title_activity_single_view"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".Memories"
+            android:label="@string/title_activity_memories"
             android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 

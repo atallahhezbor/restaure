@@ -81,7 +81,7 @@ public class SingleView extends AppCompatActivity {
             String filePath = savedData.get(2);
             ImageView imageView = (ImageView)findViewById(R.id.imageView);
             if (filePath != null)
-                setPic(imageView, filePath);
+                setPic(imageView, filePath, 1);
         }
     }
 
@@ -260,12 +260,12 @@ public class SingleView extends AppCompatActivity {
             ImageView mImageView = (ImageView)findViewById(R.id.imageView);
             List<String> path = Arrays.asList(mCurrentPhotoPath.split("/"));
             String filename = "sdcard/Pictures/" + path.get(path.size()-1);
-            setPic(mImageView, filename);
+            setPic(mImageView, filename, 1);
 
         }
     }
 
-    private void setPic(ImageView mImageView, String filepath) {
+    public static int setPic(ImageView mImageView, String filepath, int scale) {
         BitmapFactory.Options bmOptions = new BitmapFactory.Options();
         // Get the dimensions of the View
         // TODO: use this to scale the image appropriately
@@ -279,10 +279,15 @@ public class SingleView extends AppCompatActivity {
 
         // Decode the image file into a Bitmap sized to fill the View
         bmOptions.inJustDecodeBounds = false;
-        bmOptions.inSampleSize = 1;
+        bmOptions.inSampleSize = scale;
 
         Bitmap bitmap = BitmapFactory.decodeFile(filepath, bmOptions);
         mImageView.setImageBitmap(bitmap);
+        if (bitmap != null) {
+            return bitmap.getWidth();
+        } else {
+            return 0;
+        }
     }
 
 }
