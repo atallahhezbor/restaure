@@ -15,14 +15,11 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.facebook.appevents.AppEventsLogger;
 import com.yelp.clientlib.connection.YelpAPI;
 import com.yelp.clientlib.connection.YelpAPIFactory;
 import com.yelp.clientlib.entities.Business;
 import com.yelp.clientlib.entities.SearchResponse;
 import com.yelp.clientlib.entities.options.CoordinateOptions;
-
-import com.facebook.FacebookSdk;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -66,9 +63,6 @@ public class MainActivity extends AppCompatActivity {
 
         YelpAPIFactory apiFactory = new YelpAPIFactory(consumerKey, consumerSecret, token, tokenSecret);
         yelpAPI = apiFactory.createAPI();
-
-        FacebookSdk.sdkInitialize(getApplicationContext());
-        AppEventsLogger.activateApp(this);
 
         GPSTracker gps = new GPSTracker(this);
         latitude = gps.getLatitude();
