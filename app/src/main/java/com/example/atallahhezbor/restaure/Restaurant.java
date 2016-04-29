@@ -11,6 +11,7 @@ public class Restaurant {
     private String filepath;
     private String desc;
 
+
     public Restaurant() {
         this.name = "";
         this.filepath = "";

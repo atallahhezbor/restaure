@@ -1,7 +1,8 @@
 <resources>
     <string name="app_name">Restaure</string>
     <string name="action_settings">Settings</string>
-    <string name="title_activity_single_view">SingleView</string>
+    <string name="title_activity_single_view">Your experience</string>
     <string name="take_picture">Add a Picture</string>
     <string name="title_activity_memories">Memories</string>
+    <string name="memories_button">See Memories</string>
 </resources>

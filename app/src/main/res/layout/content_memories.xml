@@ -10,7 +10,8 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="com.example.atallahhezbor.restaure.Memories"
-    tools:showIn="@layout/activity_memories">
+    tools:showIn="@layout/activity_memories"
+    android:id="@+id/fragment_container">
 
     <GridLayout
         android:id="@+id/gridLayout"
@@ -19,4 +20,5 @@
         android:layout_centerVertical="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"></GridLayout>
+
 </RelativeLayout>

@@ -3,10 +3,12 @@ package com.example.atallahhezbor.restaure;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Color;
+import android.graphics.Point;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
+import android.view.Display;
 import android.view.View;
 import android.widget.GridLayout;
 import android.widget.ImageView;
@@ -26,22 +28,32 @@ public class Memories extends AppCompatActivity {
 
 
         ArrayList<Restaurant> restaurants = readFromDB();
-        Log.i("restaurants", restaurants.toString());
+
         GridLayout gridLayout = (GridLayout) findViewById(R.id.gridLayout);
+
+        // Create a layout for each picture-text pair and add it to the grid
+        int maxImageWidth = 0;
         for (final Restaurant r : restaurants) {
             String filepath = r.getFilepath();
             RelativeLayout linearLayout = new RelativeLayout(this);
+            // Create an image view and set its bitmap
             ImageView imageView = new ImageView(this);
-            imageView.setPadding(10,10,10,10);
+            imageView.setPadding(10, 10, 10, 10);
             int imageWidth = SingleView.setPic(imageView, filepath, 8);
-            Log.i("width", Integer.toString(imageWidth));
+            // Create a textview that is equally wide
             TextView textView = new TextView(this);
             textView.setText(r.getName());
             textView.setWidth(imageWidth);
             textView.setPadding(10, 10, 10, 10);
+            textView.setShadowLayer(1, 1, 1, Color.BLACK);
+            textView.setTextColor(Color.WHITE);
+            // Add everything to the layout
             linearLayout.addView(imageView);
             linearLayout.addView(textView);
             gridLayout.addView(linearLayout);
+            // Keep track of the widest image
+            maxImageWidth = imageWidth > maxImageWidth ? imageWidth : maxImageWidth;
+            // Set the on click action
             linearLayout.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
                     Intent intent = new Intent(Memories.this, SingleView.class);
@@ -51,6 +63,13 @@ public class Memories extends AppCompatActivity {
             });
 
         }
+        // Calculate the number of columns that will fit on the screen
+        Display display = getWindowManager().getDefaultDisplay();
+        Point size = new Point();
+        display.getSize(size);
+        int width = size.x;
+        int numCols = width / maxImageWidth;
+        gridLayout.setColumnCount(numCols);
     }
 
     // Get's all user's records from the database
