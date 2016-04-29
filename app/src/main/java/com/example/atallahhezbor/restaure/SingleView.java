@@ -21,6 +21,12 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.facebook.share.model.ShareLinkContent;
+import com.facebook.share.model.SharePhoto;
+import com.facebook.share.model.SharePhotoContent;
+import com.facebook.share.widget.SendButton;
+import com.facebook.share.widget.ShareButton;
+
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -69,8 +75,17 @@ public class SingleView extends AppCompatActivity {
             }
         });
 
+        ShareLinkContent content = new ShareLinkContent.Builder()
+                .setContentUrl(Uri.parse("https://developers.facebook.com"))
+                .setContentTitle(name)
+                .setContentDescription("Yo check out this dope restaurant !!")
+                .build();
+
+
+
         // Check if there is saved data for this restaurant
         ArrayList<String> savedData = readFromDB(name);
+        String filePath = null;
         if (savedData.size() > 0) {
             // Set the description
             EditText editText = (EditText)findViewById(R.id.editText);
@@ -78,11 +93,26 @@ public class SingleView extends AppCompatActivity {
             editText.setText(savedDesc);
 
             // Set the image file if saved
-            String filePath = savedData.get(2);
+            filePath = savedData.get(2);
             ImageView imageView = (ImageView)findViewById(R.id.imageView);
             if (filePath != null)
                 setPic(imageView, filePath, 1);
         }
+
+        final String fPath = filePath;
+        final ShareButton shareButton = (ShareButton)findViewById(R.id.share_btn);
+        shareButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View view) {
+                BitmapFactory.Options bmOptions = new BitmapFactory.Options();
+                bmOptions.inJustDecodeBounds = true;
+                BitmapFactory.decodeFile(fPath, bmOptions);
+                Bitmap bitmap = BitmapFactory.decodeFile(fPath, bmOptions);
+                SharePhoto photo = new SharePhoto.Builder().setBitmap(bitmap).build();
+                SharePhotoContent content = new SharePhotoContent.Builder().addPhoto(photo).build();
+                shareButton.setShareContent(content);
+                Log.d("clicked", "clicked");
+            }
+        });
     }
 
     public ArrayList<String> readFromDB(String name) {

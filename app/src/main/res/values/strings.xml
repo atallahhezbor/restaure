@@ -4,4 +4,6 @@
     <string name="title_activity_single_view">SingleView</string>
     <string name="take_picture">Add a Picture</string>
     <string name="title_activity_memories">Memories</string>
+    <string name="facebook_app_id">816298415181429</string>
+    <string name="share">Share</string>
 </resources>

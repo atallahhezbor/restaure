@@ -31,4 +31,10 @@
         android:layout_margin="@dimen/fab_margin"
         android:src="@android:drawable/ic_dialog_email" />
 
+    <com.facebook.share.widget.ShareButton
+        android:id="@+id/share_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:contentDescription="@string/share"/>
+
 </android.support.design.widget.CoordinatorLayout>
